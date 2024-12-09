@@ -8,7 +8,7 @@ using namespace Rcpp;
 // param umat membership matrix (objects in rows, clusters in columns)
 //
 // [[Rcpp::export(".distanceMatrixSmoothing")]]
-NumericMatrix distanceMatrixSmoothing(NumericMatrix dmat, NumericMatrix umat) {
+NumericMatrix distanceMatrixSmoothing(NumericMatrix dmat, NumericMatrix umat, bool add = TRUE) {
   int N = dmat.nrow();
   int K = umat.ncol();
   NumericVector card(K, 0.0);
@@ -33,7 +33,13 @@ NumericMatrix distanceMatrixSmoothing(NumericMatrix dmat, NumericMatrix umat) {
           cd += umat(i1,k1)*pow(dmat(i1,i2),2.0)*umat(i2,k2);
         }
       }
-      dbc(k1,k2) = sqrt((cd/(card[k1]*card[k2])) - var[k1] - var[k2]);
+      double dsquared = (cd/(card[k1]*card[k2])) - var[k1] - var[k2];
+      if(dsquared >= 0.0) {
+        dbc(k1,k2) = sqrt(dsquared);
+      } else {
+        if(add) dbc(k1,k2) = 0.0;
+        else dbc(k1,k2) = NA_REAL;
+      }
       dbc(k2,k1) = dbc(k1,k2);
     }
   }

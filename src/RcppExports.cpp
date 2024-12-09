@@ -11,14 +11,15 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // distanceMatrixSmoothing
-NumericMatrix distanceMatrixSmoothing(NumericMatrix dmat, NumericMatrix umat);
-RcppExport SEXP _ecosmooth_distanceMatrixSmoothing(SEXP dmatSEXP, SEXP umatSEXP) {
+NumericMatrix distanceMatrixSmoothing(NumericMatrix dmat, NumericMatrix umat, bool add);
+RcppExport SEXP _ecosmooth_distanceMatrixSmoothing(SEXP dmatSEXP, SEXP umatSEXP, SEXP addSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type dmat(dmatSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type umat(umatSEXP);
-    rcpp_result_gen = Rcpp::wrap(distanceMatrixSmoothing(dmat, umat));
+    Rcpp::traits::input_parameter< bool >::type add(addSEXP);
+    rcpp_result_gen = Rcpp::wrap(distanceMatrixSmoothing(dmat, umat, add));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -36,7 +37,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_ecosmooth_distanceMatrixSmoothing", (DL_FUNC) &_ecosmooth_distanceMatrixSmoothing, 2},
+    {"_ecosmooth_distanceMatrixSmoothing", (DL_FUNC) &_ecosmooth_distanceMatrixSmoothing, 3},
     {"_ecosmooth_rectangularMatrixSmoothing", (DL_FUNC) &_ecosmooth_rectangularMatrixSmoothing, 2},
     {NULL, NULL, 0}
 };

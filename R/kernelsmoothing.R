@@ -4,6 +4,7 @@
 #' @param x A rectangular matrix (with observations in rows and variables in columns) or an object of class \code{\link{dist}} (with resemblance values between observations).
 #' @param dist_kernel An object of class \code{\link{dist}} containing distances in the kernel space.
 #' @param kernel_scale Bandwidth of the Gaussian kernel.
+#' @param add Boolean flag to set to zero negative squared distances in the distance-based smoothing (otherwise corresponding values will be NA).
 #'
 #' @return
 #' \itemize{
@@ -29,14 +30,14 @@
 #'
 #' # Check equivalence with self-smoothing of rectangular data
 #' dist(kernelsmoothing(x,d,2))
-kernelsmoothing <- function(x, dist_kernel, kernel_scale) {
+kernelsmoothing <- function(x, dist_kernel, kernel_scale, add = TRUE) {
   if(!inherits(x, "matrix") && !inherits(x, "dist")) stop("x has to be a numeric matrix or an object of class dist")
   umat <- kernelmatrix(dist_kernel, kernel_scale, normalize = TRUE)
 
   if(inherits(x, "matrix")) {
     return(.rectangularMatrixSmoothing(x, umat))
   } else {
-    return(as.dist(.distanceMatrixSmoothing(as.matrix(x), umat)))
+    return(as.dist(.distanceMatrixSmoothing(as.matrix(x), umat, add)))
   }
 }
 

@@ -5,7 +5,7 @@
 \alias{kernelmatrix}
 \title{Kernel-based smoothing of multivariate data}
 \usage{
-kernelsmoothing(x, dist_kernel, kernel_scale)
+kernelsmoothing(x, dist_kernel, kernel_scale, add = TRUE)
 
 kernelmatrix(dist_kernel, kernel_scale, normalize = TRUE)
 }
@@ -15,6 +15,8 @@ kernelmatrix(dist_kernel, kernel_scale, normalize = TRUE)
 \item{dist_kernel}{An object of class \code{\link{dist}} containing distances in the kernel space.}
 
 \item{kernel_scale}{Bandwidth of the Gaussian kernel.}
+
+\item{add}{Boolean flag to set to zero negative squared distances in the distance-based smoothing (otherwise corresponding values will be NA).}
 
 \item{normalize}{A boolean flag to normalize kernel values to sum one for each row}
 }
