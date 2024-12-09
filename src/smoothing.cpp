@@ -6,6 +6,7 @@ using namespace Rcpp;
 //
 // param dmat distance matrix (objects in rows and columns)
 // param umat membership matrix (objects in rows, clusters in columns)
+//
 // [[Rcpp::export(".distanceMatrixSmoothing")]]
 NumericMatrix distanceMatrixSmoothing(NumericMatrix dmat, NumericMatrix umat) {
   int N = dmat.nrow();

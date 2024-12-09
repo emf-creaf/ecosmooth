@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 .distanceMatrixSmoothing <- function(dmat, umat) {
-    .Call('_ecosmooth_distanceMatrixSmoothing', PACKAGE = 'ecosmooth', dmat, umat)
+    .Call(`_ecosmooth_distanceMatrixSmoothing`, dmat, umat)
 }
 
 .rectangularMatrixSmoothing <- function(smat, umat) {
-    .Call('_ecosmooth_rectangularMatrixSmoothing', PACKAGE = 'ecosmooth', smat, umat)
+    .Call(`_ecosmooth_rectangularMatrixSmoothing`, smat, umat)
 }
 

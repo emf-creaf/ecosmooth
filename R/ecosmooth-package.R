@@ -1,6 +1,6 @@
 #' ecosmooth: Kernel-based smoothing of multivariate ecological data
 #'
-#' Assists ecologists in the analysis of temporal changes of ecosystems, defined as trajectories on a chosen multivariate space
+#' Performs smoothing of multivariate ecological data on the basis of Gaussian kernels
 #'
 #' @name ecosmooth-package
 #' @aliases ecosmooth ecosmooth-package
@@ -15,6 +15,7 @@
 ## usethis namespace: start
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rcpp sourceCpp
+#' @importFrom stats as.dist dist
 #' @useDynLib ecosmooth, .registration = TRUE
 ## usethis namespace: end
 NULL
