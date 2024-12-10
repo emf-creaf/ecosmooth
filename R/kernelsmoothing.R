@@ -4,6 +4,7 @@
 #' @param x A rectangular matrix (with observations in rows and variables in columns) or an object of class \code{\link{dist}} (with resemblance values between observations).
 #' @param dist_kernel An object of class \code{\link{dist}} containing distances in the kernel space.
 #' @param kernel_scale Bandwidth of the Gaussian kernel.
+#' @param strata Optional classification of observations to specify zero kernel values for observations not belonging to the same stratum.
 #' @param add Boolean flag to set to zero negative squared distances in the distance-based smoothing (otherwise corresponding values will be NA).
 #'
 #' @return
@@ -30,9 +31,9 @@
 #'
 #' # Check equivalence with self-smoothing of rectangular data
 #' dist(kernelsmoothing(x,d,2))
-kernelsmoothing <- function(x, dist_kernel, kernel_scale, add = TRUE) {
+kernelsmoothing <- function(x, dist_kernel, kernel_scale, strata = NULL, add = TRUE) {
   if(!inherits(x, "matrix") && !inherits(x, "dist")) stop("x has to be a numeric matrix or an object of class dist")
-  umat <- kernelmatrix(dist_kernel, kernel_scale, normalize = TRUE)
+  umat <- kernelmatrix(dist_kernel, kernel_scale, strata = strata, normalize = TRUE)
 
   if(inherits(x, "matrix")) {
     return(.rectangularMatrixSmoothing(x, umat))
@@ -42,17 +43,23 @@ kernelsmoothing <- function(x, dist_kernel, kernel_scale, add = TRUE) {
 }
 
 #' @rdname kernelsmoothing
-#' @param normalize A boolean flag to normalize kernel values to sum one for each row
+#' @param normalize A boolean flag to normalize kernel values to sum one for each row.
 #' @export
-kernelmatrix <- function(dist_kernel, kernel_scale, normalize = TRUE) {
+kernelmatrix <- function(dist_kernel, kernel_scale, strata = NULL, normalize = TRUE) {
   if(!inherits(dist_kernel, "dist")) stop("dist_kernel has to be an object of class dist")
   if(!is.numeric(kernel_scale))  stop("kernel_scale has to be a positive numeric value")
   if(kernel_scale <= 0)  stop("kernel_scale has to be a positive numeric value")
   dist_kernel <- as.matrix(dist_kernel)
   N <- nrow(dist_kernel)
-  umat_kernel <- matrix(NA, N, N)
+  if(!is.null(strata)) {
+    if(!is.vector(strata)) stop("strata has to be a vector of the same length as the number of objects")
+    if(length(strata)!=N) stop("strata has to be a vector of the same length as the number of objects")
+  }
+  umat_kernel <- matrix(0, N, N)
   for(i1 in 1:N) {
-    for(i2 in 1:N) {
+    stratum <- 1:N
+    if(!is.null(strata)) stratum <- stratum[strata == strata[i1]]
+    for(i2 in stratum) {
       umat_kernel[i1, i2] <- exp(-1*(dist_kernel[i1,i2]^2)/(2*(kernel_scale^2)))
     }
   }

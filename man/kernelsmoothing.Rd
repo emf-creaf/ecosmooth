@@ -5,9 +5,9 @@
 \alias{kernelmatrix}
 \title{Kernel-based smoothing of multivariate data}
 \usage{
-kernelsmoothing(x, dist_kernel, kernel_scale, add = TRUE)
+kernelsmoothing(x, dist_kernel, kernel_scale, strata = NULL, add = TRUE)
 
-kernelmatrix(dist_kernel, kernel_scale, normalize = TRUE)
+kernelmatrix(dist_kernel, kernel_scale, strata = NULL, normalize = TRUE)
 }
 \arguments{
 \item{x}{A rectangular matrix (with observations in rows and variables in columns) or an object of class \code{\link{dist}} (with resemblance values between observations).}
@@ -16,9 +16,11 @@ kernelmatrix(dist_kernel, kernel_scale, normalize = TRUE)
 
 \item{kernel_scale}{Bandwidth of the Gaussian kernel.}
 
+\item{strata}{Optional classification of observations to specify zero kernel values for observations not belonging to the same stratum.}
+
 \item{add}{Boolean flag to set to zero negative squared distances in the distance-based smoothing (otherwise corresponding values will be NA).}
 
-\item{normalize}{A boolean flag to normalize kernel values to sum one for each row}
+\item{normalize}{A boolean flag to normalize kernel values to sum one for each row.}
 }
 \value{
 \itemize{
